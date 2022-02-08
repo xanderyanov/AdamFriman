@@ -1,4 +1,4 @@
-﻿@model string
+﻿@model Person
 
 @{
     Layout = null;
@@ -11,6 +11,6 @@
 </head>
 <body>
     <div>
-        @Model World (from the view)    </div>
+        @Model.name World @Model.age (from the view)    </div>
 </body>
 </html>
