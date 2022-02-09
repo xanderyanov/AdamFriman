@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PartyInvites.Models;
+using System.Linq;
 
 namespace PartyInvites.Controllers
 {
@@ -8,23 +9,37 @@ namespace PartyInvites.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            
+            return View(); //При запуске первым обрабатывается метод Index (из за своего названия по умолчанию) и возвращает view по механизму Razor - с соответствующим названием Index
         }
 
         [HttpGet]
         public ViewResult RsvpForm()
         {
-            return View();
+            return View(); //Если в строке адреса ...home/RsvpForm, и запрос Get, вызывается этот метод и возвращает view RsvpForm.cshtml
+            // адрес вызывается из ссылки на Index.cshtml
         }
 
 
         [HttpPost]
         public ViewResult RsvpForm(GuestResponse guestResponse)
-        {
-            // TODO: store response from guest
-            return View();
+        { //Если с этой страницы передается Post запрос (а он передается в форме на ней), то запускается перегруженный метод, принимающий параметры типа GuestResponse
+            if (ModelState.IsValid) //проверка на валидность модели по параметрам, указанным в файле GuestResponse.cs
+            {
+                Repository.AddResponse(guestResponse);
+                return View("Thanks", guestResponse);
+            }
+            else
+            {
+                return View();
+            }
+
         }
 
+        public ViewResult ListResponses()
+        {
+            return View(Repository.Responses.Where(r => r.WillAttend == true));
+        }
 
     }
 }
