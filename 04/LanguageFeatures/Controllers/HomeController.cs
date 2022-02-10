@@ -14,10 +14,12 @@ namespace LanguageFeatures.Controllers
             foreach (Product p in Product.GetProducts())
             {
                 string name = p?.Name ?? "<NoName>";
+                string category = p?.Category;
                 decimal? price = p?.Price;
+                bool? inStock = p?.InStock;
 
                 string relatedName = p?.Related?.Name ?? "<NoRelated>";
-                results.Add(string.Format("Name: {0}, Price: {1}, Related: {2}", name, price, relatedName));
+                results.Add(string.Format($"Name: {name}, Category: {category}, Price: {price}, Related: {relatedName}, InStock: {inStock}"));
             }
             return View(results);
 
